@@ -35,16 +35,16 @@ const TopCards: React.FC<StockInfoProps> = ({ symbol, alertValue }) => {
 
   if (stockData) {
     return (
-      <div className={`card-top text-white ${stockData.dp < 0 ? 'bg-danger' : 'bg-success'} `}>
-      <div className="card-body">
+    <div className={`card-top text-white`} style={{backgroundColor: "#222222"}}>
+      <div className="card-body" >
         <div className="d-flex justify-content-between">
-          <p className="card-title mb-0">{symbol}</p>
-          <span className={`badge ${stockData.dp < 0 ? 'badge-secondary' : 'badge-warning'} rounded-pill align-self-start`}>
+          <p className="card-title mb-0" style={{ fontSize: '0.9rem' }}>{symbol}</p>
+          <span className={`badge rounded-pill align-self-start`}>
             {stockData.c} USD
           </span>
         </div>
-        <div className="d-flex" style={{marginLeft: "42px"}}>
-          <h6 className="mb-0">{previousClosePrice + "%"}</h6>
+        <div className={`d-flex ${stockData.c <= parseInt(alertValue) ? 'text-danger' : 'text-success'} `} style={{marginLeft: "42px"}}>
+          <h5 className="mb-0">{previousClosePrice + "%"}</h5>
         </div>
       </div>
     </div>

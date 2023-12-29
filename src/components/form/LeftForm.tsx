@@ -11,7 +11,15 @@ const LeftForm = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setFormDataList([...formDataList, { service: service, amount: amount }]);
+    const existingServiceIndex = formDataList.findIndex(item => item.service === service);
+  
+    if (existingServiceIndex >= 0) {
+      const newList = [...formDataList];
+      newList[existingServiceIndex] = { ...newList[existingServiceIndex], amount: amount };
+      setFormDataList(newList);
+    } else {
+      setFormDataList([...formDataList, { service: service, amount: amount }]);
+    }
   };
 
   return (
