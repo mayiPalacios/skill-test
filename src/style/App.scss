@@ -20,6 +20,16 @@
     font-size: 0.85rem; 
   }
   
-  .card-top{
-    padding: 1em
+  .row .col-3 {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  
+  .card-top {
+    border-right: 1px solid rgb(58, 57, 57);
+    padding: 0.5em; 
+  }
+  
+  .card-body {
+    padding: 0.5em;
   }

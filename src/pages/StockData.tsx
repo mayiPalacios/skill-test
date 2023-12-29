@@ -2,7 +2,7 @@ import LeftForm from "../components/form/LeftForm"
 
 const StockData = () =>{
     return(
-           <div className="container-fluid">
+        <div className="container-fluid">
             <LeftForm />
         </div>
     )
