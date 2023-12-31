@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
 import { Card, Form, Button } from "react-bootstrap";
 import TopCards from "../cards/TopCards";
+import { FormDataType, StockData } from "../../interfaces/InterfacesStock";
 import {
-  FormDataType,
-  IQuoteData,
-  StockData,
-} from "../../interfaces/InterfacesStock";
-import {
-  getPercentageChange,
   subscribeToStock,
   unsubscribeFromStock,
 } from "../../api/finnhubWebsocket";
@@ -29,20 +24,9 @@ const LeftForm = () => {
     const localData = localStorage.getItem("websocket");
     return localData ? JSON.parse(localData) : [];
   });
-  const [previousValue, setPreviousValue] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetchPreviousClosePrice = async (symbol: string) => {
-      const price: IQuoteData = await getPercentageChange(symbol);
-      if (price != null) {
-        setPreviousValue(price.pc);
-      }
-    };
-
-    const handleData = (data: any, symbol: any) => {
-      // console.log("handleData data", data);
-      // console.log("handleData symbol", data.data[0]?.s);
-
+    const handleData = (data: any) => {
       const stockDataUpdate = { symbol: data.data[0]?.s, p: data.data[0]?.p };
 
       const currentDataRaw = localStorage.getItem("websocket");
@@ -58,26 +42,8 @@ const LeftForm = () => {
       }
 
       localStorage.setItem("websocket", JSON.stringify(currentData));
-
       setStockData(currentData);
-      // const newData = { symbol: data.data[0]?.s, p: data.data[0].p };
-
-      // const existDataIndex = stockData.findIndex(
-      //   (item) => item?.symbol === data.data[0]?.s
-      // );
-      // if (existDataIndex !== -1) {
-      //   const updatedStockData = stockData.map((item) =>
-      //     item?.symbol === data.data[0]?.s ? newData : item
-      //   );
-      //   setStockData(updatedStockData);
-      // } else {
-      //   setStockData([...stockData, newData]);
-      // }
     };
-
-    formDataList.forEach((symbol) => {
-      fetchPreviousClosePrice(symbol.service);
-    });
 
     formDataList.forEach((formItem) => {
       if (formItem.service) {
@@ -94,27 +60,9 @@ const LeftForm = () => {
     };
   }, [formDataList]);
 
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const existingServiceIndex = formDataList.findIndex(
-  //     (item) => item.service === service
-  //   );
-  //   if (existingServiceIndex >= 0) {
-  //     const newList = [...formDataList];
-  //     newList[existingServiceIndex] = {
-  //       ...newList[existingServiceIndex],
-  //       amount: amount,
-  //     };
-  //     setFormDataList(newList);
-  //   } else {
-  //     setFormDataList([...formDataList, { service: service, amount: amount }]);
-  //   }
-  // };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormDataList((currentDataList) => {
-      // Buscar si ya existe un elemento con el mismo valor 'service'
       const existingServiceIndex = currentDataList.findIndex(
         (item) => item.service === service
       );
@@ -122,50 +70,53 @@ const LeftForm = () => {
       let newDataList;
 
       if (existingServiceIndex >= 0) {
-        // Si existe, actualizar este elemento
         newDataList = [...currentDataList];
         newDataList[existingServiceIndex] = {
           ...newDataList[existingServiceIndex],
           amount: amount,
         };
       } else {
-        // Si no existe, agregar el nuevo elemento
         newDataList = [
           ...currentDataList,
           { service: service, amount: amount },
         ];
       }
 
-      // Actualizar localStorage con la nueva lista
       localStorage.setItem("formDataList", JSON.stringify(newDataList));
 
-      return newDataList; // Actualiza formDataList
+      return newDataList;
     });
   };
 
-  const numCardsToShowWithoutScroll = 4; 
-  
+  const numCardsToShowWithoutScroll = 4;
+
   const shouldScroll = stockData.length > numCardsToShowWithoutScroll;
-  console.log(shouldScroll)
-  
+  console.log(shouldScroll);
+
   return (
     <div>
       <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000 }}>
-    <div className={`row ${shouldScroll ? 'row-scrollable ' : ''}`}>
-      {stockData &&
-        stockData.map((data) => (
-          data && (
-            <div className={`  ${shouldScroll ? 'col-3' : 'col-3'}`} key={data.symbol} style={{ width:'20%' }}>
-              <TopCards
-                symbol={data.symbol}
-                alertValue={amount}
-                stockData={data}
-              />
-            </div>
-          )
-        ))}
-    </div>
-  </div>
+        <div className={`row ${shouldScroll ? "row-scrollable " : ""}`}>
+          {stockData &&
+            stockData.map(
+              (data) =>
+                data && (
+                  <div
+                    className={`  ${shouldScroll ? "col-3" : "col-3"}`}
+                    key={data.symbol}
+                    style={{ width: "20%" }}
+                  >
+                    <TopCards
+                      symbol={data.symbol}
+                      alertValue={amount}
+                      stockData={data}
+                    />
+                  </div>
+                )
+            )}
+        </div>
+      </div>
+      
       <div style={{ marginTop: "120px" }}>
         <Card style={{ width: "42rem" }}>
           <Card.Body>

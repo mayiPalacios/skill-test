@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IQuoteData, IStockDataGraph, IgraphProps, StockData } from "../../interfaces/InterfacesStock";
-import { getPercentageChange, subscribeToStock, unsubscribeFromStock } from "../../api/finnhubWebsocket";
+import { getPercentageChange} from "../../api/finnhubWebsocket";
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -10,7 +10,6 @@ const StockChart: React.FC<IgraphProps> = ({stockData}) =>{
     const dataFromStorage = localStorage.getItem('websocketGraph');
     return dataFromStorage ? JSON.parse(dataFromStorage) : [];
   });
- console.log(stockData)
 
  const fetchPreviousClosePrice = async (symbol: StockData) => {
   const price: IQuoteData = await getPercentageChange(symbol.symbol);

@@ -10,6 +10,12 @@ export interface StockData {
     p: number;
 }
 
+export interface ICardStockData {
+    symbol: string;
+    p: number;
+    dp: number;
+}
+
 export interface IStockDataList {
     p: number;
 }
@@ -22,7 +28,7 @@ export interface IQuoteData {
 export interface IStockDataGraph {
     symbol: string;
     pc: number;
-    c: number;
+    p: number;
 }
 
 export interface IgraphProps {
@@ -33,3 +39,8 @@ export interface FormDataType {
     service: string;
     amount: string;
 }
+
+export interface SymbolDpPair {
+    symbol: string;
+    dp: number | null;
+  }
