@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import  { getPercentageChange, subscribeToStock, unsubscribeFromStock } from '../../api/finnhubWebsocket';
-import { IQuoteData, IStockDataContext, StockData, StockInfoProps } from '../../interfaces/InterfacesStock';
+import { IQuoteData, StockData, StockInfoProps } from '../../interfaces/InterfacesStock';
 
-const TopCards: React.FC<StockInfoProps> = ({ symbol, alertValue, stockData }) => {
+const TopCards: React.FC<StockInfoProps> = React.memo(({ symbol, alertValue, stockData }) => {
   // const [stockData, setStockData] = useState<StockData | null>(null);
   const [dpPercentChange, setPercentChange] = useState<number | null>(null);
   const [socketUpdated, setSocketUpdated] = useState<number>(0);
@@ -52,6 +52,6 @@ const TopCards: React.FC<StockInfoProps> = ({ symbol, alertValue, stockData }) =
     return <div>Loading...</div>;
   }
 
-};
+});
 
 export default TopCards;

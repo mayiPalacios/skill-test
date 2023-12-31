@@ -19,13 +19,17 @@ export interface IQuoteData {
     pc: number;
 }
 
-export interface IStockDataContext {
+export interface IStockDataGraph {
     symbol: string;
     pc: number;
     c: number;
 }
 
 export interface IgraphProps {
-    symbols: string[];
     stockData: (StockData | null)[];
+}
+
+export interface FormDataType {
+    service: string;
+    amount: string;
 }
