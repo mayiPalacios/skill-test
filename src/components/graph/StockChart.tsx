@@ -32,7 +32,6 @@ const StockChart: React.FC<IgraphProps> = ({stockData}) =>{
   }
 };
 
-
   useEffect(()=>{
     if (stockData.length > 0) {
       stockData.forEach((symb) => {
