@@ -9,9 +9,10 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt'],
       manifest: {
-        name: 'Nombre de tu aplicación',
-        short_name: 'Nombre corto',
-        theme_color: '#ffffff',
+        name: 'finnhub api Application',
+        short_name: 'FinnhubApp',
+        theme_color: "#4A90E2", 
+        background_color: '#ffffff',
         icons: [
         ],
       },
