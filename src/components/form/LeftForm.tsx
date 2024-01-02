@@ -7,11 +7,13 @@ import {
   unsubscribeFromStock,
 } from "../../api/finnhubWebsocket";
 import StockChart from "../graph/StockChart";
+import { useFormDataList } from "../../context/FormDataListContext";
 
 const LeftForm = () => {
   const [service, setService] = useState("");
   const [amount, setAmount] = useState("");
-  const [formDataList, setFormDataList] = useState<FormDataType[]>(() => {
+  const { setFormDataList } = useFormDataList();
+  const [lefFormDataList, setLefFormDataList] = useState<FormDataType[]>(() => {
     const dataFromStorage = localStorage.getItem("formDataList");
 
     if (dataFromStorage) {
@@ -27,8 +29,8 @@ const LeftForm = () => {
 
   useEffect(() => {
     const handleData = (data: any) => {
-      const stockDataUpdate = { symbol: data.data[0]?.s, p: data.data[0]?.p };
-
+      const stockDataUpdate = { symbol: data.data[0]?.s, p: data.data[0]?.p, alertValue: amount };
+ 
       const currentDataRaw = localStorage.getItem("websocket");
       const currentData = currentDataRaw ? JSON.parse(currentDataRaw) : [];
       const dataIndex = currentData.findIndex(
@@ -45,24 +47,24 @@ const LeftForm = () => {
       setStockData(currentData);
     };
 
-    formDataList.forEach((formItem) => {
+    lefFormDataList.forEach((formItem) => {
       if (formItem.service) {
         subscribeToStock(formItem.service, handleData);
       }
     });
 
     return () => {
-      formDataList.forEach((formItem) => {
+      lefFormDataList.forEach((formItem) => {
         if (formItem.service) {
           unsubscribeFromStock(formItem.service);
         }
       });
     };
-  }, [formDataList]);
+  }, [lefFormDataList]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setFormDataList((currentDataList) => {
+    setLefFormDataList((currentDataList) => {
       const existingServiceIndex = currentDataList.findIndex(
         (item) => item.service === service
       );
@@ -83,6 +85,7 @@ const LeftForm = () => {
       }
 
       localStorage.setItem("formDataList", JSON.stringify(newDataList));
+      setFormDataList(newDataList)
 
       return newDataList;
     });
@@ -96,32 +99,29 @@ const LeftForm = () => {
   return (
     <div>
       <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000 }}>
-        <div className={`row ${shouldScroll ? "row-scrollable " : ""}`}>
+        <div className={`row-query row ${shouldScroll ? "row-scrollable " : ""}`}>
           {stockData &&
             stockData.map(
               (data) =>
                 data && (
                   <div
-                    className={`  ${shouldScroll ? "col-3" : "col-3"}`}
+                    className={`card-container-component ${shouldScroll ? "col-3" : "col-3"}`}
                     key={data.symbol}
-                    style={{ width: "20%" }}
                   >
                     <TopCards
                       symbol={data.symbol}
-                      alertValue={amount}
-                      stockData={data}
-                    />
+                      stockData={data}                    />
                   </div>
                 )
             )}
         </div>
       </div>
-      
+
       <div style={{ marginTop: "120px" }}>
-        <Card style={{ width: "42rem" }}>
+        <Card className="card-form-container" >
           <Card.Body>
             <Form onSubmit={handleSubmit}>
-              <div className="d-flex gap-2">
+              <div className="d-flex gap-2 form-container">
                 <Form.Group>
                   <Form.Label>Select Financial Service:</Form.Label>
                   <Form.Control

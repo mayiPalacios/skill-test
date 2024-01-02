@@ -1,7 +1,6 @@
 
 export interface StockInfoProps {
     symbol: string;
-    alertValue: string;
     stockData: StockData | null;
 }
     
