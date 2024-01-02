@@ -4,9 +4,6 @@ const socket: WebSocket = new WebSocket(`wss://ws.finnhub.io?token=${FINNHUB_API
 
 type DataCallback = (data: any) => void;
 
-
-
-
  export const getPercentageChange = async (symbol: string) => {
     const API_ENDPOINT = 'https://finnhub.io/api/v1';
     const response = await fetch(`${API_ENDPOINT}/quote?symbol=${symbol}&token=${FINNHUB_API_KEY}`);
@@ -14,7 +11,6 @@ type DataCallback = (data: any) => void;
     
     return data.dp ? data.dp : null; 
   };
-
 
 export const subscribeToStock = (symbol: string, callback: DataCallback) => {
   
@@ -26,14 +22,11 @@ export const subscribeToStock = (symbol: string, callback: DataCallback) => {
     }, { once: true }); 
   }
 
-  // Escuchar mensajes entrantes
   socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
     callback(data);
   };
 };
-
-
 
 export const unsubscribeFromStock = (symbol: string) => {
     if (socket.readyState === WebSocket.OPEN) {

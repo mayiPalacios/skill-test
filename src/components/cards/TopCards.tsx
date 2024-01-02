@@ -1,30 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import socket, { getPercentageChange, subscribeToStock, unsubscribeFromStock } from '../../api/finnhubWebsocket';
+import { StockData, StockInfoProps } from '../../interfaces/InterfacesStock';
 
-export interface StockInfoProps {
-  symbol: string;
-}
-  
-  interface StockData {
-    c: number; // Precio actual
-    dp: number; // Cambio porcentual diario
-  }
-
-const TopCards: React.FC<StockInfoProps> = ({ symbol }) => {
-  // Estado para almacenar los datos de la acción
+const TopCards: React.FC<StockInfoProps> = ({ symbol, alertValue }) => {
   const [stockData, setStockData] = useState<StockData | null>(null);
   const [previousClosePrice, setPreviousClosePrice] = useState<number | null>(null);
-  const [percentageChange, setPercentageChange] = useState<number | null>(null);
   const [socketUpdated, setSocketUpdated] = useState<number>(0);
 
   useEffect(() => {
-    // Define el manejador de datos
     const fetchPreviousClosePrice = async () => {
       const price = await getPercentageChange(symbol);
       if(price != null){
         setPreviousClosePrice(price);
       }
-    
     };
 
     const handleData = (data: any) => {
@@ -36,7 +24,7 @@ const TopCards: React.FC<StockInfoProps> = ({ symbol }) => {
         setSocketUpdated((prev) => prev + 1);
       }
     };
-     
+
     fetchPreviousClosePrice();
     subscribeToStock(symbol, handleData);
 
@@ -47,17 +35,19 @@ const TopCards: React.FC<StockInfoProps> = ({ symbol }) => {
 
   if (stockData) {
     return (
-      <div className={`card ${stockData.dp < 0 ? 'bg-danger' : 'bg-success'}`}>
-        <div className="card-body">
-          <h5 className="card-title">{symbol}</h5>
-          <p className="card-text">
+    <div className={`card-top text-white`} style={{backgroundColor: "#222222"}}>
+      <div className="card-body" >
+        <div className="d-flex justify-content-between">
+          <p className="card-title mb-0" style={{ fontSize: '0.9rem' }}>{symbol}</p>
+          <span className={`badge rounded-pill align-self-start`}>
             {stockData.c} USD
-          </p>
-          <p className="card-text">
-            {previousClosePrice + "%"}
-          </p>
+          </span>
+        </div>
+        <div className={`d-flex ${stockData.c <= parseInt(alertValue) ? 'text-danger' : 'text-success'} `} style={{marginLeft: "42px"}}>
+          <h5 className="mb-0">{previousClosePrice + "%"}</h5>
         </div>
       </div>
+    </div>
     );
   } else {
     return <div>Loading...</div>;

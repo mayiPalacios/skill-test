@@ -1,9 +1,9 @@
-import TopCards from "../components/cards/TopCards"
+import LeftForm from "../components/form/LeftForm"
 
 const StockData = () =>{
     return(
-        <div>
-            <TopCards symbol="BINANCE:BTCUSDT"  />
+        <div className="container-fluid">
+            <LeftForm />
         </div>
     )
 }
