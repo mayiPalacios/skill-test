@@ -1,12 +1,14 @@
+import { ApiResponse } from "../interfaces/InterfacesStock";
+
 const FINNHUB_API_KEY = import.meta.env.VITE_FINNHUB_API_KEY;
 
 const socket: WebSocket = new WebSocket(`wss://ws.finnhub.io?token=${FINNHUB_API_KEY}`);
 
-type DataCallback = (data: any) => void;
+type DataCallback = (data: ApiResponse) => void;
 
  export const getPercentageChange = async (symbol: string) => {
     const API_ENDPOINT = 'https://finnhub.io/api/v1';
-   const response = await fetch(`${API_ENDPOINT}/quote?symbol=${symbol}&token=${FINNHUB_API_KEY}`);
+    const response = await fetch(`${API_ENDPOINT}/quote?symbol=${symbol}&token=${FINNHUB_API_KEY}`);
     const data = await response.json();
     
     return data.dp ? data : null; 

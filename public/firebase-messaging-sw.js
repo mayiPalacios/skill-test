@@ -3,8 +3,6 @@ importScripts(
   "https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"
 );
 
-// Initialize the Firebase app in the service worker
-// "Default" Firebase configuration (prevents errors)
 const defaultConfig = {
   apiKey: true,
   projectId: true,
@@ -13,18 +11,19 @@ const defaultConfig = {
 };
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCNFdh4buOOi8O15AmSvcev5GymAFvK3h8",
-    authDomain: "finnhubapp.firebaseapp.com",
-    projectId: "finnhubapp",
-    storageBucket: "finnhubapp.appspot.com",
-    messagingSenderId: "174328673142",
-    appId: "1:174328673142:web:f557f4a2fe7eb3b76d8057",
-    measurementId: "G-S1FXL5XPZE"
-  };
+  apiKey: "AIzaSyCNFdh4buOOi8O15AmSvcev5GymAFvK3h8",
+  authDomain: "finnhubapp.firebaseapp.com",
+  projectId: "finnhubapp",
+  storageBucket: "finnhubapp.appspot.com",
+  messagingSenderId: "174328673142",
+  appId: "1:174328673142:web:f557f4a2fe7eb3b76d8057",
+  measurementId: "G-S1FXL5XPZE"
+};
+
+console.log(firebaseConfig)
 
 firebase.initializeApp(firebaseConfig);
 
-// Retrieve firebase messaging
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {

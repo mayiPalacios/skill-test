@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, Form, Button } from "react-bootstrap";
 import TopCards from "../cards/TopCards";
-import { FormDataType, StockData } from "../../interfaces/InterfacesStock";
+import { ApiResponse, FormDataType, StockData } from "../../interfaces/InterfacesStock";
 import {
   subscribeToStock,
   unsubscribeFromStock,
@@ -28,9 +28,14 @@ const LeftForm = () => {
   });
 
   useEffect(() => {
-    const handleData = (data: any) => {
-      const stockDataUpdate = { symbol: data.data[0]?.s, p: data.data[0]?.p, alertValue: amount };
- 
+    const handleData = (data: ApiResponse) => {
+      console.log("cambiate:",data)
+      const stockDataUpdate = {
+        symbol: data.data[0]?.s,
+        p: data.data[0]?.p,
+        alertValue: amount,
+      };
+
       const currentDataRaw = localStorage.getItem("websocket");
       const currentData = currentDataRaw ? JSON.parse(currentDataRaw) : [];
       const dataIndex = currentData.findIndex(
@@ -85,32 +90,32 @@ const LeftForm = () => {
       }
 
       localStorage.setItem("formDataList", JSON.stringify(newDataList));
-      setFormDataList(newDataList)
+      setFormDataList(newDataList);
 
       return newDataList;
     });
   };
 
   const numCardsToShowWithoutScroll = 4;
-
   const shouldScroll = stockData.length > numCardsToShowWithoutScroll;
-  console.log(shouldScroll);
-
+  
   return (
     <div>
       <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000 }}>
-        <div className={`row-query row ${shouldScroll ? "row-scrollable " : ""}`}>
+        <div
+          className={`row-query row ${shouldScroll ? "row-scrollable " : ""}`}
+        >
           {stockData &&
             stockData.map(
               (data) =>
                 data && (
                   <div
-                    className={`card-container-component ${shouldScroll ? "col-3" : "col-3"}`}
+                    className={`card-container-component ${
+                      shouldScroll ? "col-3" : "col-3"
+                    }`}
                     key={data.symbol}
                   >
-                    <TopCards
-                      symbol={data.symbol}
-                      stockData={data}                    />
+                    <TopCards symbol={data.symbol} stockData={data} />
                   </div>
                 )
             )}
@@ -118,12 +123,17 @@ const LeftForm = () => {
       </div>
 
       <div style={{ marginTop: "120px" }}>
-        <Card className="card-form-container" >
+        <Card
+          className="card-form-container"
+          style={{ backgroundColor: "rgb(34, 34, 34)" }}
+        >
           <Card.Body>
             <Form onSubmit={handleSubmit}>
               <div className="d-flex gap-2 form-container">
                 <Form.Group>
-                  <Form.Label>Select Financial Service:</Form.Label>
+                  <Form.Label style={{ color: "white" }}>
+                    Select Stock Service:
+                  </Form.Label>
                   <Form.Control
                     as="select"
                     name="financialService"
@@ -143,7 +153,9 @@ const LeftForm = () => {
                   </Form.Control>
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label>Enter Amount ($):</Form.Label>
+                  <Form.Label style={{ color: "white" }}>
+                    Enter Stop-Loss Price: ($):
+                  </Form.Label>
                   <Form.Control
                     type="text"
                     name="amount"
@@ -159,6 +171,8 @@ const LeftForm = () => {
                     height: "36px",
                     padding: "5px",
                     marginTop: "32px",
+                    borderColor: "green",
+                    backgroundColor: "green",
                   }}
                 >
                   Submit

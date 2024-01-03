@@ -2,6 +2,10 @@
   width: auto;
 }
 
+body{
+  background-color: #3d3d3d;
+}
+
 .card-title {
   font-size: 1rem;
 }
@@ -155,25 +159,4 @@
     overflow-x: auto;
     flex-wrap: nowrap;
   }
-}
-
-
-#notificationHeader {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-#notificationBody {
-  margin-top: 10px;
-  text-align: center;
-}
-
-#imageContainer {
-  display: flex;
-  align-items: center;
-  height: 100px;
-  object-fit: contain;
 }

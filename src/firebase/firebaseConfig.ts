@@ -1,16 +1,14 @@
 import { initializeApp } from "firebase/app";
-
 import { getMessaging } from "firebase/messaging";
 
-//Firebase Config values imported from .env file
 const firebaseConfig = {
-  apiKey: "AIzaSyCNFdh4buOOi8O15AmSvcev5GymAFvK3h8",
-  authDomain: "finnhubapp.firebaseapp.com",
-  projectId: "finnhubapp",
-  storageBucket: "finnhubapp.appspot.com",
-  messagingSenderId: "174328673142",
-  appId: "1:174328673142:web:f557f4a2fe7eb3b76d8057",
-  measurementId: "G-S1FXL5XPZE"
+  apiKey: import.meta.env.VITE_APP_API_KEY,
+  authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_APP_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_APP_ID,
+  measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID,
 };
 
 // Initialize Firebase

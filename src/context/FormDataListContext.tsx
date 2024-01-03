@@ -1,8 +1,6 @@
-// FormDataListContext.tsx
 import React, { createContext, useContext, useState } from 'react';
 import { FormDataType } from '../interfaces/InterfacesStock';
  
-
 interface FormDataListContextType {
   formDataList: FormDataType[];
   setFormDataList: React.Dispatch<React.SetStateAction<FormDataType[]>>;
