@@ -14,7 +14,7 @@ const TopCards: React.FC<StockInfoProps> = React.memo(({ symbol, stockData }) =>
   const list = JSON.parse(amount!);
   let filteredItem = list.find((item: { service: string }) => item.service === symbol);
   
-  const [storedSymbolData, setStoredSymbolData] = useState<FormDataType>(filteredItem);
+  const [storedSymbolData] = useState<FormDataType>(filteredItem);
   const { formDataList } = useFormDataList(); 
   const formDataForSymbol = formDataList.find(item => item.service === symbol);
   const priceAlertSentRef = useRef(false);
