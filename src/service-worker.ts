@@ -1,9 +1,9 @@
 // src/service-worker.ts
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', () => {
   console.log('Service Worker: Installed');
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', () => {
   console.log('Service Worker: Activated');
 });
