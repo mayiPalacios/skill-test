@@ -29,7 +29,6 @@ const LeftForm = () => {
 
   useEffect(() => {
     const handleData = (data: ApiResponse) => {
-      console.log("cambiate:",data)
       const stockDataUpdate = {
         symbol: data.data[0]?.s,
         p: data.data[0]?.p,
