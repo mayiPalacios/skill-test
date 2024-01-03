@@ -2,7 +2,7 @@
     "name": "finnhub api Application",
     "short_name": "FinnhubApp",
     "description": "",
-    "start_url": ".",
+    "start_url": "/",
     "display_override": ["standalone", "fullscreen"],
     "display": "standalone",
     "background_color": "#FFFFFF",
