@@ -137,6 +137,7 @@ const LeftForm = () => {
                     as="select"
                     name="financialService"
                     value={service}
+                    required
                     onChange={(e) => setService(e.target.value)}
                   >
                     <option value="">Choose...</option>
@@ -156,9 +157,10 @@ const LeftForm = () => {
                     Enter Stop-Loss Price: ($):
                   </Form.Label>
                   <Form.Control
-                    type="text"
+                    type="number"
                     name="amount"
                     value={amount}
+                    required
                     onChange={(e) => setAmount(e.target.value)}
                   />
                 </Form.Group>
