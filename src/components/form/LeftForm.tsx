@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
 import { Card, Form, Button } from "react-bootstrap";
 import TopCards from "../cards/TopCards";
+import { ApiResponse, FormDataType, StockData } from "../../interfaces/InterfacesStock";
 import {
-  FormDataType,
-  IQuoteData,
-  StockData,
-} from "../../interfaces/InterfacesStock";
-import {
-  getPercentageChange,
   subscribeToStock,
   unsubscribeFromStock,
 } from "../../api/finnhubWebsocket";
 import StockChart from "../graph/StockChart";
+import { useFormDataList } from "../../context/FormDataListContext";
 
 const LeftForm = () => {
   const [service, setService] = useState("");
   const [amount, setAmount] = useState("");
-  const [formDataList, setFormDataList] = useState<FormDataType[]>(() => {
+  const { setFormDataList } = useFormDataList();
+  const [lefFormDataList, setLefFormDataList] = useState<FormDataType[]>(() => {
     const dataFromStorage = localStorage.getItem("formDataList");
 
     if (dataFromStorage) {
@@ -29,21 +26,15 @@ const LeftForm = () => {
     const localData = localStorage.getItem("websocket");
     return localData ? JSON.parse(localData) : [];
   });
-  const [previousValue, setPreviousValue] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetchPreviousClosePrice = async (symbol: string) => {
-      const price: IQuoteData = await getPercentageChange(symbol);
-      if (price != null) {
-        setPreviousValue(price.pc);
-      }
-    };
-
-    const handleData = (data: any, symbol: any) => {
-      // console.log("handleData data", data);
-      // console.log("handleData symbol", data.data[0]?.s);
-
-      const stockDataUpdate = { symbol: data.data[0]?.s, p: data.data[0]?.p };
+    const handleData = (data: ApiResponse) => {
+      console.log("cambiate:",data)
+      const stockDataUpdate = {
+        symbol: data.data[0]?.s,
+        p: data.data[0]?.p,
+        alertValue: amount,
+      };
 
       const currentDataRaw = localStorage.getItem("websocket");
       const currentData = currentDataRaw ? JSON.parse(currentDataRaw) : [];
@@ -58,63 +49,27 @@ const LeftForm = () => {
       }
 
       localStorage.setItem("websocket", JSON.stringify(currentData));
-
       setStockData(currentData);
-      // const newData = { symbol: data.data[0]?.s, p: data.data[0].p };
-
-      // const existDataIndex = stockData.findIndex(
-      //   (item) => item?.symbol === data.data[0]?.s
-      // );
-      // if (existDataIndex !== -1) {
-      //   const updatedStockData = stockData.map((item) =>
-      //     item?.symbol === data.data[0]?.s ? newData : item
-      //   );
-      //   setStockData(updatedStockData);
-      // } else {
-      //   setStockData([...stockData, newData]);
-      // }
     };
 
-    formDataList.forEach((symbol) => {
-      fetchPreviousClosePrice(symbol.service);
-    });
-
-    formDataList.forEach((formItem) => {
+    lefFormDataList.forEach((formItem) => {
       if (formItem.service) {
         subscribeToStock(formItem.service, handleData);
       }
     });
 
     return () => {
-      formDataList.forEach((formItem) => {
+      lefFormDataList.forEach((formItem) => {
         if (formItem.service) {
           unsubscribeFromStock(formItem.service);
         }
       });
     };
-  }, [formDataList]);
-
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const existingServiceIndex = formDataList.findIndex(
-  //     (item) => item.service === service
-  //   );
-  //   if (existingServiceIndex >= 0) {
-  //     const newList = [...formDataList];
-  //     newList[existingServiceIndex] = {
-  //       ...newList[existingServiceIndex],
-  //       amount: amount,
-  //     };
-  //     setFormDataList(newList);
-  //   } else {
-  //     setFormDataList([...formDataList, { service: service, amount: amount }]);
-  //   }
-  // };
+  }, [lefFormDataList]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setFormDataList((currentDataList) => {
-      // Buscar si ya existe un elemento con el mismo valor 'service'
+    setLefFormDataList((currentDataList) => {
       const existingServiceIndex = currentDataList.findIndex(
         (item) => item.service === service
       );
@@ -122,57 +77,63 @@ const LeftForm = () => {
       let newDataList;
 
       if (existingServiceIndex >= 0) {
-        // Si existe, actualizar este elemento
         newDataList = [...currentDataList];
         newDataList[existingServiceIndex] = {
           ...newDataList[existingServiceIndex],
           amount: amount,
         };
       } else {
-        // Si no existe, agregar el nuevo elemento
         newDataList = [
           ...currentDataList,
           { service: service, amount: amount },
         ];
       }
 
-      // Actualizar localStorage con la nueva lista
       localStorage.setItem("formDataList", JSON.stringify(newDataList));
+      setFormDataList(newDataList);
 
-      return newDataList; // Actualiza formDataList
+      return newDataList;
     });
   };
 
-  const numCardsToShowWithoutScroll = 4; 
-  
+  const numCardsToShowWithoutScroll = 4;
   const shouldScroll = stockData.length > numCardsToShowWithoutScroll;
-  console.log(shouldScroll)
   
   return (
     <div>
       <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000 }}>
-    <div className={`row ${shouldScroll ? 'row-scrollable ' : ''}`}>
-      {stockData &&
-        stockData.map((data) => (
-          data && (
-            <div className={`  ${shouldScroll ? 'col-3' : 'col-3'}`} key={data.symbol} style={{ width:'20%' }}>
-              <TopCards
-                symbol={data.symbol}
-                alertValue={amount}
-                stockData={data}
-              />
-            </div>
-          )
-        ))}
-    </div>
-  </div>
+        <div
+          className={`row-query row ${shouldScroll ? "row-scrollable " : ""}`}
+        >
+          {stockData &&
+            stockData.map(
+              (data) =>
+                data && (
+                  <div
+                    className={`card-container-component ${
+                      shouldScroll ? "col-3" : "col-3"
+                    }`}
+                    key={data.symbol}
+                  >
+                    <TopCards symbol={data.symbol} stockData={data} />
+                  </div>
+                )
+            )}
+        </div>
+      </div>
+
       <div style={{ marginTop: "120px" }}>
-        <Card style={{ width: "42rem" }}>
+        <Card
+          className="card-form-container"
+          style={{ backgroundColor: "rgb(34, 34, 34)" }}
+        >
           <Card.Body>
             <Form onSubmit={handleSubmit}>
-              <div className="d-flex gap-2">
+              <div className="d-flex gap-2 form-container">
                 <Form.Group>
-                  <Form.Label>Select Financial Service:</Form.Label>
+                  <Form.Label style={{ color: "white" }}>
+                    Select Stock Service:
+                  </Form.Label>
                   <Form.Control
                     as="select"
                     name="financialService"
@@ -192,7 +153,9 @@ const LeftForm = () => {
                   </Form.Control>
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label>Enter Amount ($):</Form.Label>
+                  <Form.Label style={{ color: "white" }}>
+                    Enter Stop-Loss Price: ($):
+                  </Form.Label>
                   <Form.Control
                     type="text"
                     name="amount"
@@ -208,6 +171,8 @@ const LeftForm = () => {
                     height: "36px",
                     padding: "5px",
                     marginTop: "32px",
+                    borderColor: "green",
+                    backgroundColor: "green",
                   }}
                 >
                   Submit

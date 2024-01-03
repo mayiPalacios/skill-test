@@ -1,47 +1,53 @@
 .card {
-    width: auto; 
-  }
-  
-  .card-title {
-    font-size: 1rem;
-  }
-  
-  .card-body h2 {
-    font-size: 2.5rem; 
-    color: white;
-  }
-  
-  .badge {
-    font-size: 1rem; 
-    padding: 0.5em 1em; 
-  }
-  
-  .card-text small {
-    font-size: 0.85rem; 
-  }
-  
-  .row .col-3 {
-    padding-right: 0;
-    padding-left: 0;
-  }
-  
-  .card-top {
-    border-right: 1px solid rgb(58, 57, 57);
-    padding: 0.5em; 
-  }
-  
-  .card-body {
-    padding: 0.5em;
-  }
+  width: auto;
+}
 
-  /* CSS para personalizar la barra de desplazamiento en navegadores WebKit y Firefox */
+body{
+  background-color: #3d3d3d;
+}
+
+.card-title {
+  font-size: 1rem;
+}
+
+.card-form-container {
+  width: 42rem;
+}
+
+.card-body h2 {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.badge {
+  font-size: 1rem;
+  padding: 0.5em 1em;
+}
+
+.card-text small {
+  font-size: 0.85rem;
+}
+
+.row .col-3 {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.card-top {
+  border-right: 1px solid rgb(58, 57, 57);
+  padding: 0.5em;
+}
+
+.card-body {
+  padding: 0.5em;
+}
+
 .row-scrollable {
   display: flex;
   overflow-x: auto;
   flex-wrap: nowrap;
 }
 
-/* Webkit: Chrome, Safari, nuevos Edge */
 .row-scrollable::-webkit-scrollbar {
   height: 8px;
 }
@@ -59,43 +65,98 @@
   background: #555;
 }
 
-/* Firefox */
 .row-scrollable {
   scrollbar-width: thin;
   scrollbar-color: #888 #f1f1f1;
 }
 
 
-  @media (max-width: 767px) {
-    /* CSS para personalizar la barra de desplazamiento en navegadores WebKit y Firefox */
-.row-scrollable {
-  display: flex;
-  overflow-x: auto;
-  flex-wrap: nowrap;
-}
-
-/* Webkit: Chrome, Safari, nuevos Edge */
-.row-scrollable::-webkit-scrollbar {
-  height: 8px;
-}
-
-.row-scrollable::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.row-scrollable::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
-}
-
-.row-scrollable::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Firefox */
-.row-scrollable {
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f1f1f1;
-}
-
+@media (max-width: 767px) {
+  .row-scrollable {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
   }
+
+  .row-scrollable::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .row-scrollable::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  .row-scrollable::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  .row-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .row-scrollable {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+  }
+
+}
+
+@media (max-width: 1029px) {
+  .card-container-component {
+    width: 30%;
+  }
+
+  .row-query {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 820px) {
+  .card-container-component {
+    width: 40%;
+  }
+
+  .row-query {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 1200px) {
+  .form-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-form-container {
+    width: 50%;
+  }
+}
+
+@media (max-width: 794px) {
+  .card-container-component {
+    width: 50%;
+  }
+
+  .row-query {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 500px) {
+  .card-container-component {
+    width: 60%;
+  }
+
+  .row-query {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+}

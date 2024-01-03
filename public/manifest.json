@@ -1,0 +1,26 @@
+{
+    "name": "finnhub api Application",
+    "short_name": "FinnhubApp",
+    "description": "",
+    "start_url": ".",
+    "display_override": ["standalone", "fullscreen"],
+    "display": "standalone",
+    "background_color": "#FFFFFF",
+    "theme_color": "#000000",
+    "orientation": "portrait",
+    "scope": "/",
+    "icons": [
+      {
+        "src": "https://cdn.pixabay.com/photo/2020/09/23/15/50/bee-in-flight-5596372_1280.jpg",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "https://cdn.pixabay.com/photo/2021/12/09/17/29/nicholas-6858771_1280.jpg",
+        "sizes": "256x256",
+        "type": "image/png"
+      }
+    ],
+    "splash_pages": null
+  }
+  
