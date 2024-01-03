@@ -23,7 +23,7 @@ Manage WebSocket connections in the background, storing data in local storage fo
 Integrate web push notifications to alert users when stock prices drop below set thresholds.
 
 ### View Project on Vercel
-https://skill-test-xi.vercel.app/
+https://skill-test-73oy.vercel.app/
 
 ## Project Architecture
 Folder Structure
