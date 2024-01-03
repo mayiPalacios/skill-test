@@ -25,6 +25,9 @@ Integrate web push notifications to alert users when stock prices drop below set
 ### View Project on Vercel
 https://skill-test-73oy.vercel.app/
 
+### Document information
+https://docs.google.com/document/d/1hgz3zVLlDJvAIqfJoYcVSG4anyppYF2CzP2Adu2DE2o/edit?usp=sharing
+
 ## Project Architecture
 Folder Structure
 
